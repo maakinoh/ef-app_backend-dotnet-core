@@ -183,9 +183,9 @@
         };
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
         IDialogReference dialogRef = await DialogService.ShowAsync<ConfirmDialog>("Confirm", dialog, options);
-        DialogResult dialogResult = await dialogRef.Result;
+        DialogResult? dialogResult = await dialogRef.Result;
 
-        if (!dialogResult.Canceled)
+        if (dialogResult is { Canceled: false })
         {
             var result = await ImageService.DeleteImageAsync(id);
             if (result)

@@ -5,7 +5,6 @@ namespace Eurofurence.App.Server.Web.Identity;
 public class AuthorizationOptions
 {
     public HashSet<string> Admin { get; set; } = new();
-
     public HashSet<string> Attendee { get; set; } = new();
     public HashSet<string> AttendeeCheckedIn { get; set; } = new();
 
@@ -19,9 +18,10 @@ public class AuthorizationOptions
 
     /// <summary>
     /// Artist alley moderators may approve or reject table applications from attendees.
-    ///
     /// </summary>
     public HashSet<string> ArtistAlleyModerator { get; set; } = new();
+
+    public HashSet<string> ArtistAlleyAdmin { get; set; } = new();
 
     public HashSet<string> PrivateMessageSender { get; set; } = new();
 }

@@ -18,7 +18,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IArtistAlleyService, ArtistAlleyService>();
 builder.Services.AddScoped<IFursuitService, FursuitService>();
 builder.Services.AddScoped<IDealerService, DealerService>();
-builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<TokenAuthorizationMessageHandler>();
 builder.Services.AddHttpClient("api", options =>
@@ -35,12 +35,16 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.DefaultScopes.Add("profile");
 }).AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, RemoteUserAccount, BackendAccountClaimsFactory>();
 
-var authSettings = builder.Configuration.GetSection("Authorization").Get<AuthorizationSettings>() ?? new AuthorizationSettings();
-
 builder.Services.AddAuthorizationCore(config =>
 {
     config.AddPolicy("RequireKnowledgeBaseEditor", policy =>
-        policy.RequireRole("KnowledgeBaseEditor")
+        policy.RequireRole(["KnowledgeBaseEditor", "Admin"])
+        );
+    config.AddPolicy("RequireArtistAlleyModerator", policy =>
+        policy.RequireRole(["ArtistAlleyModerator", "ArtistAlleyAdmin", "Admin"])
+        );
+    config.AddPolicy("RequireArtistAlleyAdmin", policy =>
+        policy.RequireRole(["ArtistAlleyAdmin", "Admin"])
         );
 }
 );
